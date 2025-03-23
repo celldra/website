@@ -1,4 +1,4 @@
-import matter from 'gray-matter';
+import fm from 'front-matter';
 import { get, writable } from 'svelte/store';
 
 export const articleCache = writable<Article[]>(await getArticles(true));
@@ -13,7 +13,6 @@ export interface Article {
 
 export async function getArticles(init: boolean = false): Promise<Article[]> {
 	if (!init) {
-		console.log('Returning cached articles');
 		const cachedArticles = get(articleCache);
 		if (cachedArticles && cachedArticles.length > 0) {
 			return cachedArticles;
@@ -30,16 +29,16 @@ export async function getArticles(init: boolean = false): Promise<Article[]> {
 
 	for (const path in modules) {
 		const rawContent = modules[path] as string;
-		const { content, data } = matter(rawContent);
+		const { body, attributes } = fm(rawContent);
 
 		const slug = path.split('/').pop()?.replace('.md', '') ?? '';
 
 		articles.push({
 			slug,
-			title: data.title,
-			description: data.description,
-			date: data.date,
-			raw: content
+			title: attributes.title,
+			description: attributes.description,
+			date: attributes.date,
+			raw: body
 		});
 	}
 

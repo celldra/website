@@ -4,19 +4,33 @@
 	import '../app.css';
 
 	import { ModeWatcher, mode, toggleMode } from 'mode-watcher';
+	import { onNavigate } from '$app/navigation';
+	import { SiGithub } from '@icons-pack/svelte-simple-icons';
 
 	let { children } = $props();
 
 	let y: number = $state(0);
 	let scrolled: boolean = $derived(y > 10);
+
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 </script>
 
 <div
-	class="bg-secondary/85 border-border sticky top-0 z-50 flex items-center justify-between border-b px-4 py-3 backdrop-blur-lg"
+	style="view-transition-name: header;"
+	class="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-secondary/85 px-4 py-3 backdrop-blur-lg"
 	class:scrolled
 >
 	<div class="flex items-center">
-		<span class="font-mono text-primary mr-8"> &lt;celldra.dev&gt; </span>
+		<span class="mr-8 font-mono text-primary"> &lt;celldra.dev&gt; </span>
 
 		<Button href="/" variant="ghost">
 			<Home />
@@ -34,13 +48,18 @@
 		</Button>
 	</div>
 
-	<Button onclick={toggleMode} variant="ghost" size="icon">
-		{#if $mode === 'dark'}
-			<Sun />
-		{:else}
-			<Moon />
-		{/if}
-	</Button>
+	<div class="flex items-center">
+		<Button href="https://github.com/celldra/website" target="_blank" variant="ghost" size="icon">
+			<SiGithub />
+		</Button>
+		<Button onclick={toggleMode} variant="ghost" size="icon">
+			{#if $mode === 'dark'}
+				<Sun />
+			{:else}
+				<Moon />
+			{/if}
+		</Button>
+	</div>
 </div>
 
 <div class="container mt-12">

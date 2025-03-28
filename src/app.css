@@ -172,7 +172,7 @@ h6 {
 }
 
 .blog code {
-	@apply border-border bg-muted/50 rounded-[0.50rem] border px-2 py-0.5;
+	@apply rounded-[0.50rem] border border-border bg-muted/50 px-2 py-0.5 text-sm;
 }
 
 .blog a {
@@ -182,6 +182,10 @@ h6 {
 .blog ol,
 li {
 	@apply list-inside list-disc;
+}
+
+.blog ul {
+	@apply my-4;
 }
 
 .blog table {
@@ -194,11 +198,11 @@ li {
 
 .blog th,
 .blog td {
-	@apply border-border border px-4 py-2 text-left;
+	@apply border border-border px-4 py-2 text-left;
 }
 
 .blog tr {
-	@apply border-border border-b;
+	@apply border-b border-border;
 }
 
 .blog tr:nth-child(even) {
@@ -206,5 +210,53 @@ li {
 }
 
 .blog blockquote {
-	@apply text-muted-foreground italic;
+	@apply my-4 italic text-muted-foreground;
+}
+
+.blog pre > code[class^='language-'] {
+	@apply !border-none !bg-none;
+}
+
+.blog pre {
+	@apply mb-4 rounded-[0.50rem] border border-border bg-muted/50 px-2 py-1;
+}
+
+.blog img {
+	@apply my-4 h-[50%] w-[50%] rounded-[0.75rem];
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes fade-out {
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes slide-from-right {
+	from {
+		transform: translateX(30px);
+	}
+}
+
+@keyframes slide-to-left {
+	to {
+		transform: translateX(-30px);
+	}
+}
+
+:root::view-transition-old(root) {
+	animation:
+		90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+		300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+
+:root::view-transition-new(root) {
+	animation:
+		210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+		300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
 }

@@ -38,7 +38,7 @@ Here's an example of `inline code` inside a sentence.
 
 ```js
 function greet(name) {
-	console.log(`Hello, ${name}`);
+ console.log(`Hello, ${name}`);
 }
 ```
 
@@ -111,7 +111,7 @@ npm install your-mind
 ## HTML Passthrough
 
 <div style="padding: 0.5rem; border: 1px solid #888;">
-	This is raw HTML inside Markdown.
+ This is raw HTML inside Markdown.
 </div>
 
 > Wat about this?

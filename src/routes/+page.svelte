@@ -28,14 +28,16 @@
 	} from '@icons-pack/svelte-simple-icons';
 	import { page } from '$app/state';
 	import { ArrowRight, ChevronDown, MessageCircleHeart } from 'lucide-svelte';
+	import { relativeTime } from '$lib/utils';
+	import { goto } from '$app/navigation';
 </script>
 
-<section id="hero" class="border-border flex items-center justify-center border-b py-8 text-center">
+<section id="hero" class="flex items-center justify-center border-b border-border py-8 text-center">
 	<div>
 		<h1 class="mb-2 text-3xl font-bold">Hey, I'm Harry</h1>
-		<p class="text-muted-foreground text-xl">
+		<p class="text-xl text-muted-foreground">
 			I'm a self-taught software engineer from the UK with a passion for building literally
-			anything, from simple websites to full-scale production ready systems.
+			anything, from simple websites to full-scale production-ready systems.
 		</p>
 
 		<div class="mt-6 flex items-center justify-center gap-2">
@@ -50,30 +52,35 @@
 			</Button>
 		</div>
 
-		<div class="text-muted-foreground mt-8 flex justify-center">
+		<div class="mt-8 flex justify-center text-muted-foreground">
 			<ChevronDown size="16" class="animate-bounce" />
 		</div>
 	</div>
 </section>
 
-<section id="blog" class="border-border border-b py-8">
+<section id="blog" class="border-b border-border py-8">
 	<h2 class="mb-8 text-2xl font-bold">Snippets from my blog</h2>
-	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
-
-	{#each page.data.articles as article}
-		<Card.Root>
-			<Card.Header>
-				<Card.Title>
-					{article.title}
-				</Card.Title>
-				<Card.Description>{article.description}</Card.Description>
-			</Card.Header>
-			<Card.Content></Card.Content>
-		</Card.Root>
-	{/each}
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		{#each page.data.articles as article}
+			<Card.Root
+				class="cursor-pointer transition-colors duration-150 hover:bg-muted"
+				onclick={async () => await goto(`/blog/${article.slug}`)}
+			>
+				<Card.Header>
+					<Card.Title>
+						{article.title}
+					</Card.Title>
+					<Card.Description>Created {relativeTime(article.created)}</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					{article.description}
+				</Card.Content>
+			</Card.Root>
+		{/each}
+	</div>
 </section>
 
-<section id="frameworks" class="border-border border-b py-8">
+<section id="frameworks" class="border-b border-border py-8">
 	<h2 class="mb-8 text-2xl font-bold">Frameworks I've worked with</h2>
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		<Card.Root>
@@ -443,7 +450,7 @@
 		<MessageCircleHeart class="text-primary" size="32" />
 		Want to chat?
 	</h1>
-	<p class="text-muted-foreground text-xl">
+	<p class="text-xl text-muted-foreground">
 		Feel free to reach out to me, I'm always happy to chat about anything. I have a few
 		communication options available, <b>preferably use Signal or GitHub</b>:
 	</p>
